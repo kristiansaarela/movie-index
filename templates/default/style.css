@@ -1,0 +1,149 @@
+p, img, table, tr, td {
+    margin:0;
+    padding:0;
+    border:none;
+}
+
+body {
+    background-color: #eaedef;
+    font-family: Tahoma;
+    min-height: 100%;
+    font-size: 10pt;
+    padding: 0;
+	margin: 0;
+}
+
+#container {
+    width: 850px;
+	margin: 0 auto;
+	padding-top: 30px;
+}
+
+#header div, #content {
+    border-radius: 4px;
+    border: 1px solid #f6f8f8;
+    border-shadow: 1px #fff;
+    margin-top:10px;
+    padding: 2px 5px;
+}
+
+#content {
+    padding: 0;
+}
+
+#content div {
+    padding: 2px 5px;
+}
+
+#header p {
+    padding: 55px 5px 0 0;
+}
+
+#header #search {
+    padding:0;
+    margin:0;
+}
+
+.fl {float:left; text-align: left;}
+.fr {float:right; text-align: right;}
+.cl {clear:both;}
+
+form, select, option, input {
+    padding:0;
+    margin:0;
+}
+
+.genre {
+    text-align: center;
+}
+
+.lol {
+    width: 385px;
+    text-align: justify;
+}
+.asda{width:430px}
+
+.cap {
+    text-transform: capitalize;
+}
+
+a:link {	color: #0065A4;	text-decoration:none;}
+a:visited {	color: #0065A4;	text-decoration:none;}
+a:hover { 	color: #a8b911; text-decoration:none;}
+a:active {	color: #cccccc;	text-decoration:none;}
+
+#footer {
+	padding-top: 20px;
+	text-align: center;
+	bottom: 0;
+	font-size: 7pt;
+	color: #757b7f;
+}
+
+#footer a {
+	text-decoration: none;
+}
+
+select, textarea, input {
+	font-weight: normal;
+	font-family: "Lucida Grande", Verdana, Helvetica, sans-serif;
+	color: #444;
+	border: 1px solid #B8C2C8;
+	background-color: #F2F4F5;
+}
+
+input[type="submit"] {
+    padding: 1px 3px;
+}
+
+button {
+	font-size: 1.1em;
+	color: #5C7381;
+	border: 1px solid #B8C2C8;
+	background-color: #F7F8F9;
+}
+
+button:hover {
+	border-color: #9AA9B1;
+	color: #000;
+}
+
+optgroup {
+    color: black;
+}
+
+#encodes td {
+	width: 170px;
+    background-color: #ecedee;
+	border-top: 1px #ffffff solid;
+	border-bottom: 1px #d3d4d5 solid;
+	border-left: 1px #ffffff solid;
+	border-right: 1px #d3d4d5 solid;
+    padding: 3px;
+}
+
+#encodes td a {
+    font-weight: bold;
+}
+
+#encodes td p {
+    padding-left: 5px;
+}
+
+#encodes td p a {
+    font-weight: normal;
+}
+
+#movies {
+    padding: 0!important;
+}
+
+#loading {
+    text-align: center;
+    display: none;
+}
+
+.movieh{background: #dfe9d2!important;} a .movieh{border-bottom: 2px solid #dfe9d2!important;}
+.moviel{background: #eaf0e3!important;}
+.tvh{background: #e7ebff!important;}
+.tvl{background: #eff2ff!important;}
