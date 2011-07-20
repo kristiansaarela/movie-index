@@ -351,7 +351,7 @@ $index->set('p', $path);
     foreach($types as $val => $link)
         $t .= "<a href=\"index.php?sort=".$val."\" ".addbg($val).">".$link."</a>&nbsp;\r";
     $header->set('types', $t);
-    $header->set('search_form', search_form($types, $years_totalMovies));
+    $header->set('search_form_data', array('types' => $types, 'years' => $years_totalMovies));
     
     $templateSelect = '';
     foreach($templates AS $key => $val)

@@ -70,7 +70,22 @@
             <?php echo $types; ?>
         </div>
         <div class="cl fl lol">
-            <?php echo $search_form; ?>
+            <form action="index.php" method="GET" id="search">
+                <input type="text" name="q" size="15"/>
+                <select name="t">
+                    <option value="all">All</option>
+                    <?php foreach($search_form_data['types'] as $id => $typ): ?>
+                    <option value="<?php echo $id; ?>"><?php echo $typ; ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <select name="y">
+                    <option value="all">All</option>
+                    <?php foreach($search_form_data['years'] as $year => $count): ?>
+                    <option value="<?php echo $year ?>"><?php echo $year . '(' . $count . ')'; ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <input type="submit" name="search" value="Search">
+            </form>
         </div>
         <div class="fr asda">
             <form method="POST" action="index.php">
