@@ -90,4 +90,16 @@ function addbg($a)
     return "class=\"$a\"";
 }
 
+function log_error($msg)
+{
+    // Log error and display sorry page.
+    error_log(date("[Y-m(M)-j G:i:s] ", time()) . $msg . "\r", 3, './errors.log');
+    include_once('class.template.php');
+    //TODO: use template specific error page.
+    $t=new Template('./templates/default/');
+    $t->set('link',BASE_URL);
+    echo $t->fetch('error.tpl.php');
+    exit();
+}
+
 ?>

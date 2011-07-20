@@ -1,6 +1,7 @@
 <?php
 
 session_start(); /** so we don't need to write it so often **/
+error_reporting(0);
 
 /** database details **/
 define('HOSTNAME', 'localhost');
@@ -40,8 +41,7 @@ try
 }
 catch(PDOException $e)
 {
-    //TODO: show error page
-    die($e->getMessage());
+    log_error($e->getMessage());
 }
 
 /** for debug **/

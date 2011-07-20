@@ -25,16 +25,22 @@ $errors = array();
 /** years and total movies released in that year **/
 try {
     $years = $dbh->prepare('SELECT year, COUNT(id) AS total_movies FROM movies GROUP BY year ORDER BY year DESC');
-    $years->execute();
     
-    while($row = $years->fetch(PDO::FETCH_ASSOC))
-        $years_totalMovies[$row['year']] = $row['total_movies'];
+    if($years->execute())
+    {
+        while($row = $years->fetch(PDO::FETCH_ASSOC))
+        {
+            $years_totalMovies[$row['year']] = $row['total_movies'];
+        }
+    }
+    else
+    {
+        throw new PDOException('Error while fetching movie year and count.');
+    }
 }
 catch(PDOException $e)
 {
-    /** we still good without this. just set it null? **/
-    error_log($e->getMessage(), 3, './errors.log');
-    //echo $e->getMessage();
+    log_error($e->getMessage());
 }
 
 /** how many results to display **/
@@ -57,28 +63,28 @@ if(isset($_GET['sort']) && in_array($_GET['sort'], $alphabet))
     {
         $count = $dbh->prepare('SELECT COUNT(id) AS total FROM movies WHERE LEFT(title, 1) = :letter');
         $count->bindParam(':letter', $letter, PDO::PARAM_STR, 1);
-        $count->execute();
-        $total = $count->fetchAll(PDO::FETCH_ASSOC);
+        
+        if($count->execute())
+        {
+            $total = $count->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else
+        {
+            throw new PDOException('Error while getting letter ' . $letter . ' movies from database.');
+        }
     }
     catch(PDOException $e)
     {
-        echo $e->getMessage();
+        log_error($e->getMessage());
     }
     
     $p->set_link(BASE_URL . 'index.php?sort=' . $letter . '&page=');
     $p->set_total($total[0]['total']);
     
-    try
-    {
-        $movies = $dbh->prepare('SELECT * FROM movies WHERE LEFT(title, 1) = :letter LIMIT :limit1, :limit2');
-        $movies->bindParam(':letter', $letter, PDO::PARAM_STR, 1);
-        $movies->bindParam(':limit1', $p->limit['limit1'], PDO::PARAM_INT);
-        $movies->bindParam(':limit2', $p->limit['limit2'], PDO::PARAM_INT);
-    }
-    catch(PDOException $e)
-    {
-        echo $e->getMessage();
-    }
+    $movies = $dbh->prepare('SELECT * FROM movies WHERE LEFT(title, 1) = :letter LIMIT :limit1, :limit2');
+    $movies->bindParam(':letter', $letter, PDO::PARAM_STR, 1);
+    $movies->bindParam(':limit1', $p->limit['limit1'], PDO::PARAM_INT);
+    $movies->bindParam(':limit2', $p->limit['limit2'], PDO::PARAM_INT);
 }
 else if(isset($_GET['sort']) && in_array($_GET['sort'], $generes))
 {
@@ -89,28 +95,28 @@ else if(isset($_GET['sort']) && in_array($_GET['sort'], $generes))
     {
         $count = $dbh->prepare('SELECT COUNT(id) AS total FROM movies WHERE genre LIKE :genre');
         $count->bindParam(':genre', $like, PDO::PARAM_STR);
-        $count->execute();
-        $total = $count->fetchAll(PDO::FETCH_ASSOC);
+        
+        if($count->execute())
+        {
+            $total = $count->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else
+        {
+            throw new PDOException('Error while getting ' . $genre . ' movies from database.');
+        }
     }
     catch(PDOException $e)
     {
-        echo $e->getMessage();
+        log_error($e->getMessage());
     }
     
     $p->set_link(BASE_URL . 'index.php?sort=' . $genre . '&page=');
     $p->set_total($total[0]['total']);
-    
-    try
-    {
-        $movies = $dbh->prepare('SELECT * FROM movies WHERE genre LIKE :genre LIMIT :limit1, :limit2');
-        $movies->bindParam(':genre', $like, PDO::PARAM_STR);
-        $movies->bindParam(':limit1', $p->limit['limit1'], PDO::PARAM_INT);
-        $movies->bindParam(':limit2', $p->limit['limit2'], PDO::PARAM_INT);
-    }
-    catch(PDOException $e)
-    {
-        echo $e->getMessage();
-    }
+
+    $movies = $dbh->prepare('SELECT * FROM movies WHERE genre LIKE :genre LIMIT :limit1, :limit2');
+    $movies->bindParam(':genre', $like, PDO::PARAM_STR);
+    $movies->bindParam(':limit1', $p->limit['limit1'], PDO::PARAM_INT);
+    $movies->bindParam(':limit2', $p->limit['limit2'], PDO::PARAM_INT);
 }
 else if(isset($_GET['sort']) && in_array($_GET['sort'], $type))
 {
@@ -120,28 +126,28 @@ else if(isset($_GET['sort']) && in_array($_GET['sort'], $type))
     {
         $count = $dbh->prepare('SELECT COUNT(id) AS total FROM movies WHERE type = :type');
         $count->bindParam(':type', $type, PDO::PARAM_INT, 1);
-        $count->execute();
-        $total = $count->fetchAll(PDO::FETCH_ASSOC);
+        
+        if($count->execute())
+        {
+            $total = $count->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else
+        {
+            throw new PDOException('Error while getting ' . $type . ' movies from database.');
+        }
     }
     catch(PDOException $e)
     {
-        echo $e->getMessage();
+        log_error($e->getMessage());
     }
     
     $p->set_link(BASE_URL . 'index.php?sort=' . $type . '&page=');
     $p->set_total($total[0]['total']);
     
-    try
-    {
-        $movies = $dbh->prepare('SELECT * FROM movies WHERE type = :type LIMIT :limit1, :limit2');
-        $movies->bindParam(':type', $type, PDO::PARAM_INT, 1);
-        $movies->bindParam(':limit1', $p->limit['limit1'], PDO::PARAM_INT);
-        $movies->bindParam(':limit2', $p->limit['limit2'], PDO::PARAM_INT);
-    }
-    catch(PDOException $e)
-    {
-        echo $e->getMessage();
-    }
+    $movies = $dbh->prepare('SELECT * FROM movies WHERE type = :type LIMIT :limit1, :limit2');
+    $movies->bindParam(':type', $type, PDO::PARAM_INT, 1);
+    $movies->bindParam(':limit1', $p->limit['limit1'], PDO::PARAM_INT);
+    $movies->bindParam(':limit2', $p->limit['limit2'], PDO::PARAM_INT);
 }
 else if(isset($_GET['search']))
 { /** search. form comes from functions.php search_form function -.- **/
@@ -224,13 +230,18 @@ else if(isset($_GET['search']))
             $count->bindParam(':year', $syear, PDO::PARAM_INT, 4);
         }
         
-        $count->execute();
-        
-        $total = $count->fetchAll(PDO::FETCH_ASSOC);
+        if($count->execute())
+        {
+            $total = $count->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else
+        {
+            throw new PDOException('Error with search query.');
+        }
     }
     catch(PDOException $e)
     {
-        echo $e->getMessage();
+        log_error($e->getMessage());
     }
     
     $p->set_link(BASE_URL . 'index.php?search=search&q='.$query.'&t='.$type.'&y='.$year.'&page=');
@@ -238,39 +249,47 @@ else if(isset($_GET['search']))
     
     $sqlend = ' ORDER BY add_time DESC LIMIT :limit1, :limit2';
 
-    try
+    $movies = $dbh->prepare($sql . $sql1 . $sqlend);
+    
+    if(isset($src['title']))
     {
-        $movies = $dbh->prepare($sql . $sql1 . $sqlend);
-        if(isset($src['title']))
-        {
-            $movies->bindParam(':squery', $squery, PDO::PARAM_STR, 64);
-        }
-        
-        if(isset($src['type']))
-        {
-            $movies->bindParam(':type', $stype, PDO::PARAM_INT, 1);
-        }
-        
-        if(isset($src['year']))
-        {
-            $movies->bindParam(':year', $syear, PDO::PARAM_INT, 4);
-        }
-        
-        $movies->bindParam(':limit1', $p->limit['limit1'], PDO::PARAM_INT);
-        $movies->bindParam(':limit2', $p->limit['limit2'], PDO::PARAM_INT);
+        $movies->bindParam(':squery', $squery, PDO::PARAM_STR, 64);
     }
-    catch(PDOException $e)
+    
+    if(isset($src['type']))
     {
-        echo $e->getMessage();
+        $movies->bindParam(':type', $stype, PDO::PARAM_INT, 1);
     }
+    
+    if(isset($src['year']))
+    {
+        $movies->bindParam(':year', $syear, PDO::PARAM_INT, 4);
+    }
+    
+    $movies->bindParam(':limit1', $p->limit['limit1'], PDO::PARAM_INT);
+    $movies->bindParam(':limit2', $p->limit['limit2'], PDO::PARAM_INT);
 }
 else if(!isset($_GET['sort'])
         || !isset($_GET['search'])
         || !in_array($_GET['sort'], $alphabet, $generes, $types))
 {
-    $count = $dbh->prepare('SELECT COUNT(id) AS total FROM movies');
-    $count->execute();
-    $total = $count->fetchAll(PDO::FETCH_ASSOC);
+    try
+    {
+        $count = $dbh->prepare('SELECT COUNT(id) AS total FROM movies');
+        
+        if($count->execute())
+        {
+            $total = $count->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else
+        {
+            throw new PDOException('Error while getting movies from database.');
+        }
+    }
+    catch(PDOException $e)
+    {
+        log_error($e->getMessage());
+    }
     
     $p->set_link('index.php?page=');
     $p->set_total($total[0]['total']);
@@ -280,8 +299,22 @@ else if(!isset($_GET['sort'])
     $movies->bindParam(':limit2', $p->limit['limit2'], PDO::PARAM_INT);
 }
 
-$movies->execute();
-$content = $movies->fetchAll(PDO::FETCH_ASSOC);
+try
+{
+    if($movies->execute())
+    {
+        $content = $movies->fetchAll(PDO::FETCH_ASSOC);
+    }
+    else
+    {
+        throw new PDOexception('Error while generating pagination');
+    }
+}
+catch(PDOexception $e)
+{
+    log_error($e->getMessage());
+}
+
 $pagesystem = $p->paginate();
 
 /** templating shit ... **/
