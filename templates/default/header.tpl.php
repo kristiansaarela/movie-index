@@ -11,6 +11,7 @@
     <script type="text/javascript" src="<?php echo $p; ?>js/jquery-1.5.2.min.js"></script>
     <script>
     $(document).ready(function() {
+        // ajax pagination.
         $('#pagination a').live('click', function(e) {
             e.preventDefault();
             //$("#encodes").fadeOut().delay(400);
@@ -26,6 +27,7 @@
             });
         });
         
+        // ajax sorting
         $('#header div a').live('click', function(e) {
             e.preventDefault();
             //$("#encodes").fadeOut().delay(400);
@@ -42,8 +44,11 @@
             });
         });
         
+        // quote.
         var refreshQuotes = setInterval(function() {
-            $(".quote").fadeOut("slow").load('index.php?quote=true&ajax=true').fadeIn("slow");
+            $(".quote").fadeOut("slow", function() {
+                $(this).load('index.php?quote=true&ajax=true').fadeIn("slow");
+            });
         }, 10000);
     });
     </script>
