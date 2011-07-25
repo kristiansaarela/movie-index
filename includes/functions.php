@@ -14,7 +14,7 @@ function _sort($array, $separator)
     {
         $line = ($x == $c) ? '' : $separator;
         $_s .= "<a href=\"index.php?sort=" . $arr . "\">" . $arr . "</a>" . $line;
-        $x++;
+        ++$x;
     }
     
     return $_s;

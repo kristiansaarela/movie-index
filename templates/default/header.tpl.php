@@ -8,8 +8,8 @@
     <title><?php echo $title; ?></title>
     
     <link rel="stylesheet" type="text/css" href="<?php echo $p; ?>style.css" />
-    <script type="text/javascript" src="<?php echo $p; ?>js/jquery-1.5.2.min.js"></script>
-    <script>
+    <script language="javascript" type="text/javascript" src="<?php echo $p; ?>js/jquery-1.5.2.min.js"></script>
+    <script language="javascript">
     $(document).ready(function() {
         // ajax pagination.
         $('#pagination a').live('click', function(e) {

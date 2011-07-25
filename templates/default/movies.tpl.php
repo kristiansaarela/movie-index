@@ -20,7 +20,7 @@
                 echo "</tr>\n";
                 $tcount = 0;
             }
-            $tcount++; $i++;
+            ++$tcount; ++$i;
         }
         
         ?>
